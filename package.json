@@ -1,0 +1,21 @@
+{
+  "name": "daybook",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A secure, keyboard-friendly to-do app for everyday tasks (MERN).",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=22.9"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace backend",
+    "test": "npm test --workspace backend",
+    "audit": "npm audit --omit=dev"
+  },
+  "type": "module"
+}

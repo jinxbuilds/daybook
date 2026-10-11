@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 127.0.0.1:27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Check for known vulnerabilities
+        run: npm audit --omit=dev --audit-level=high
+      - name: Build front end
+        run: npm run build
+      - name: Make sure no source maps are shipped
+        run: test -z "$(find frontend/dist -name '*.map')"
+      - name: Run API tests
+        run: npm test
+        env:
+          LOG_LEVEL: silent
+          TEST_MONGODB_URI: mongodb://127.0.0.1:27017/daybook_test
