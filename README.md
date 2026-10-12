@@ -33,6 +33,17 @@ Type a task the way you'd say it, for example `Pay rent friday !high #home every
 
 A preview under the box shows what was understood before you press Enter.
 
+## Deploying on Vercel
+
+One repo, two Vercel projects (import it twice; the settings in `vercel.json` cover both):
+
+| Project | Environment variables | Result |
+| --- | --- | --- |
+| **Demo** | `VITE_DEMO=true` | Static front end with an in-browser stand-in for the API (`frontend/src/lib/demoApi.js`). Tasks live in localStorage. No database. |
+| **Live** | `MONGODB_URI`, `JWT_SECRET`, `NODE_ENV=production` | The Express API in `backend/` runs as a Vercel Function (`api/index.js`) on the same domain as the front end, so cookies stay first-party. |
+
+For the live project, use a MongoDB Atlas cluster and allow access from anywhere (`0.0.0.0/0`) in Atlas Network Access, because Vercel functions don't have fixed IPs. Keep a strong, unique database user password. After deploying, `https://<your-app>/api/health` should return `{"ok":true}`.
+
 ## Getting started
 
 ### Requirements

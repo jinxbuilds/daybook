@@ -9,6 +9,7 @@ import { AuthProvider } from "./lib/auth.jsx";
 import { ToastProvider } from "./components/Toasts.jsx";
 import { applyTheme, getTheme } from "./lib/theme.js";
 import App from "./App.jsx";
+import DemoBanner from "./components/DemoBanner.jsx";
 
 applyTheme(getTheme());
 
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <ToastProvider>
           <App />
+          <DemoBanner />
         </ToastProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -1188,3 +1188,36 @@ kbd {
     transition-duration: 1ms !important;
   }
 }
+
+/* Static demo build only (VITE_DEMO=true) */
+.demo-banner {
+  position: fixed;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--sheet);
+  color: var(--ink-2);
+  font-size: 13px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.12);
+}
+.demo-banner strong { color: var(--ink); }
+.demo-banner a { color: var(--ink); }
+.demo-banner button {
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+@media (max-width: 640px) {
+  .demo-banner { gap: 8px; font-size: 12px; }
+  .demo-hint { display: none; }
+}

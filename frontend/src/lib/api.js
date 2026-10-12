@@ -1,6 +1,9 @@
 // Thin fetch wrapper. The session lives in an httpOnly cookie that
 // JavaScript cannot read; we only hold the CSRF token in memory.
 
+import { demoApi } from "./demoApi.js";
+
+export const DEMO = import.meta.env.VITE_DEMO === "true";
 const BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const credentials = BASE ? "include" : "same-origin";
 let csrfToken = null;
@@ -21,6 +24,13 @@ async function getCsrf(force = false) {
 }
 
 export async function api(path, { method = "GET", body } = {}, retry = true) {
+  if (DEMO) {
+    try {
+      return await demoApi(path, { method, body });
+    } catch (err) {
+      throw new ApiError(err.status ?? 500, err.message);
+    }
+  }
   const headers = {};
   if (method !== "GET") headers["x-csrf-token"] = await getCsrf();
   if (body !== undefined) headers["content-type"] = "application/json";
