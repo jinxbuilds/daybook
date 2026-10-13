@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth.jsx";
+import { DEMO } from "../lib/api.js";
 
 const SAMPLE = [
   { title: "Call the dentist", meta: ["Tomorrow", "#health"], flag: "high" },
@@ -18,6 +19,19 @@ export default function AuthPage({ mode }) {
   const [busy, setBusy] = useState(false);
 
   const set = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  async function enterDemo() {
+    setError("");
+    setBusy(true);
+    try {
+      await login("demo@daybook.app", "demo");
+      navigate("/today");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function submit(e) {
     e.preventDefault();
@@ -73,6 +87,20 @@ export default function AuthPage({ mode }) {
       <section className="auth-panel">
         <form className="auth-form" onSubmit={submit} noValidate>
           <h2>{needsCode ? "Enter your code" : isSignup ? "Create your account" : "Sign in"}</h2>
+
+          {DEMO && !needsCode && (
+            <div className="demo-entry">
+              <p className="muted">
+                This is a demo. No account is needed, and your tasks stay in this browser. Any email and password also work.
+              </p>
+              <button type="button" className="btn btn-primary btn-block" onClick={enterDemo} disabled={busy}>
+                Enter the demo
+              </button>
+              <p className="demo-or" aria-hidden="true">
+                or
+              </p>
+            </div>
+          )}
 
           {needsCode ? (
             <>

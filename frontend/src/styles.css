@@ -1221,3 +1221,6 @@ kbd {
   .demo-banner { gap: 8px; font-size: 12px; }
   .demo-hint { display: none; }
 }
+
+.demo-entry { display: grid; gap: 12px; }
+.demo-or { text-align: center; color: var(--ink-3); font-size: 13px; margin: 0; }
